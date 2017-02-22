@@ -29,3 +29,49 @@ instead of the python dir in the caffe source code.
 Please check [fyu/dilation](https://github.com/fyu/dilation/) for how
 to use this code. The built caffe binary is used directly by
 [dilation/train.py](https://github.com/fyu/dilation/blob/master/train.py).
+
+
+
+
+
+# Updates Required
+
+```
+make all - j
+make pycaffe -j 
+mate test -j 
+make runtest -j
+```
+## In MakeFile
+```
+LIBRARIES += glog gflags protobuf leveldb snappy \
+  lmdb boost_system boost_filesystem  hdf5_hl hdf5 m \
+  opencv_core opencv_highgui opencv_imgproc opencv_imgcodecs
+```
+
+## In MakeFile.config
+```
+  CUDA_ARCH := -gencode arch=compute_60,code=sm_60 \
+#		-gencode arch=compute_20,code=sm_21 \
+#		-gencode arch=compute_30,code=sm_30 \
+#		-gencode arch=compute_35,code=sm_35 \
+#		-gencode arch=compute_50,code=sm_50 \
+#		-gencode arch=compute_52,code=sm_52 \
+		-gencode arch=compute_61,code=sm_61 \
+		-gencode arch=compute_61,code=compute_61
+```
+
+## For Python `caffe_pb2`
+
+```
+cp python/caffe/proto/caffe_pb2.py build_master/python/caffe/proto/caffe_pb2.py
+``` 
+
+## bashrc
+
+```
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/home/ankit/caffe-dilation/build_master/lib"
+export PYTHONPATH="${PYTHONPATH}:/home/ankit/caffe-dilation/build_master/python"
+
+```
+
